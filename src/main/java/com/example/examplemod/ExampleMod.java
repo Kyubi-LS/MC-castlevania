@@ -1,8 +1,13 @@
 package com.example.examplemod;
 
+import com.example.examplemod.entity.RedDiamondSwordProjectile;
+import com.example.examplemod.item.RedDiamondSwordItem;
+import com.example.examplemod.entity.RedDiamondSwordProjectile;
+import com.example.examplemod.item.RedDiamondSwordItem;
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -14,10 +19,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -38,6 +41,8 @@ public final class ExampleMod {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     // Create a Deferred Register to hold CreativeModeTabs which will all be registered under the "examplemod" namespace
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
+    // Create a Deferred Register to hold Entities which will all be registered under the "examplemod" namespace
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MODID);
 
     // Creates a new Block with the id "examplemod:example_block", combining the namespace and path
     public static final RegistryObject<Block> EXAMPLE_BLOCK = BLOCKS.register("example_block",
@@ -72,6 +77,18 @@ public final class ExampleMod {
                 output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
             }).build());
 
+    // Red Diamond Sword
+    public static final RegistryObject<Item> RED_DIAMOND_SWORD = ITEMS.register("red_diamond_sword",
+        () -> new RedDiamondSwordItem());
+
+    // Red Diamond Sword Projectile Entity
+    public static final RegistryObject<EntityType<RedDiamondSwordProjectile>> RED_DIAMOND_SWORD_PROJECTILE = ENTITIES.register("red_diamond_sword_projectile",
+        () -> EntityType.Builder.<RedDiamondSwordProjectile>of(RedDiamondSwordProjectile::new, MobCategory.MISC)
+            .sized(0.5F, 0.5F)
+            .clientTrackingRange(10)
+            .updateInterval(5)
+            .build("red_diamond_sword_projectile"));
+
     public ExampleMod(FMLJavaModLoadingContext context) {
         var modBusGroup = context.getModBusGroup();
 
@@ -82,6 +99,8 @@ public final class ExampleMod {
         BLOCKS.register(modBusGroup);
         // Register the Deferred Register to the mod event bus so items get registered
         ITEMS.register(modBusGroup);
+        // Register the Deferred Register to the mod event bus so entities get registered
+        ENTITIES.register(modBusGroup);
         // Register the Deferred Register to the mod event bus so tabs get registered
         CREATIVE_MODE_TABS.register(modBusGroup);
 
@@ -108,16 +127,8 @@ public final class ExampleMod {
     private static void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS)
             event.accept(EXAMPLE_BLOCK_ITEM);
+        if (event.getTabKey() == CreativeModeTabs.COMBAT)
+            event.accept(RED_DIAMOND_SWORD.get());
     }
 
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
-    public static class ClientModEvents {
-        @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {
-            // Some client setup code
-            LOGGER.info("HELLO FROM CLIENT SETUP");
-            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
-        }
     }
-}
