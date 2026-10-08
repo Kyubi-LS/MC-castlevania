@@ -1,6 +1,9 @@
 26.2 Changelog
 65.1
 ====
+ - 65.1.3 Fixed getToolModifiedState for AXE_SCRAPE (#10880)
+ - 65.1.2 Add TooltipContext and TooltipDisplay to ItemTooltipEvent
+ - 65.1.1 Fix mod packets being processed after vanilla packets when received in the same tick.
  - 65.1.0 26.2 RB 1
 
 65.0

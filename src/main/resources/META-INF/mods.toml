@@ -9,27 +9,27 @@ license="All Rights Reserved"
 #clientSideOnly=true #optional, default=false
 
 [[mods]]
-modId="examplemod"
+modId="castlevania"
 version="1.0.0"
-displayName="Example Mod"
+displayName="Castlevania"
 #updateJSONURL="https://example.com/updates.json" #optional
 #displayURL="https://example.com/" #optional
-#logoFile="examplemod.png" #optional
+#logoFile="castlevania.png" #optional
 #credits="" #optional
 authors="YourNameHere, OtherNameHere" #optional
 #displayTest="MATCH_VERSION" #optional, default=MATCH_VERSION when not clientSideOnly, else IGNORE_ALL_VERSION
 
-description='''Example mod description.
-Newline characters can be used like this, and rendered on the mods screen properly.'''
+description='''Castlevania inspired mod.
+Adds the Cross, a throwable weapon that flies 10 blocks, waits 2 seconds and returns to your inventory, hurting enemies on its way.'''
 
-[[dependencies.examplemod]] #recommended
+[[dependencies.castlevania]] #recommended
     modId="forge"
     mandatory=true
     versionRange="[65,)"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.examplemod]] #recommended
+[[dependencies.castlevania]] #recommended
     modId="minecraft"
     mandatory=true
     versionRange="[26.2,26.3,)"

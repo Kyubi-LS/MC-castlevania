@@ -1,0 +1,7 @@
+{
+  "item.castlevania.cross": "Cruz",
+  "entity.castlevania.cross": "Cruz",
+  "item.castlevania.example_item": "Objeto de ejemplo",
+  "block.castlevania.example_block": "Bloque de ejemplo",
+  "itemGroup.castlevania.example_tab": "Pestaña de ejemplo"
+}

@@ -10,7 +10,7 @@ plugins {
 }
 
 version = '1.0.0'
-group = 'com.example.examplemod'
+group = 'com.castlevania'
 
 // Mojang ships Java 25 to end users in 26.1+, so your mod should target Java 25.
 java.toolchain.languageVersion = JavaLanguageVersion.of(25)
@@ -24,7 +24,7 @@ minecraft {
             workingDir = layout.projectDirectory.dir('run')
 
             systemProperty 'eventbus.api.strictRuntimeChecks', 'true'
-            systemProperty 'forge.enabledGameTestNamespaces', 'examplemod'
+            systemProperty 'forge.enabledGameTestNamespaces', 'castlevania'
         }
 
         register('client')
@@ -38,7 +38,7 @@ minecraft {
         register('data') {
             workingDir = layout.projectDirectory.dir('run-data')
 
-            args '--mod', 'examplemod', '--all', '--output', layout.projectDirectory.dir('src/generated/resources'), '--existing', layout.projectDirectory.dir('src/main/resources')
+            args '--mod', 'castlevania', '--all', '--output', layout.projectDirectory.dir('src/generated/resources'), '--existing', layout.projectDirectory.dir('src/main/resources')
         }
     }
 }
@@ -51,7 +51,7 @@ repositories {
 }
 
 dependencies {
-    implementation minecraft.dependency('net.minecraftforge:forge:26.2-65.1.0')
+    implementation minecraft.dependency('net.minecraftforge:forge:26.2-65.1.3')
     annotationProcessor 'net.minecraftforge:eventbus-validator:7.0.5'
 }
 
