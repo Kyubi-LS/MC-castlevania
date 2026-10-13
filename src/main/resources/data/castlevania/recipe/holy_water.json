@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "W": "minecraft:water_bucket",
+    "G": "minecraft:glass_bottle",
+    "L": "minecraft:lapis_lazuli"
+  },
+  "pattern": [
+    " W ",
+    "GLG",
+    " G "
+  ],
+  "result": {
+    "id": "castlevania:holy_water",
+    "count": 4
+  }
+}

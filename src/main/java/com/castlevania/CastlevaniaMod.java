@@ -1,7 +1,9 @@
 package com.castlevania;
 
 import com.castlevania.entity.CrossEntity;
+import com.castlevania.entity.HolyWaterEntity;
 import com.castlevania.item.CrossItem;
+import com.castlevania.item.HolyWaterItem;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -10,6 +12,7 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -86,12 +89,28 @@ public final class CastlevaniaMod {
             .build(ENTITY_TYPES.key("cross"))
     );
 
-    // Creates a creative tab with the id "castlevania:example_tab" that is placed after the combat tab
-    public static final RegistryObject<CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
+    // Holy Water: a throwable potion that ignites blocks on impact
+    public static final RegistryObject<Item> HOLY_WATER_ITEM = ITEMS.register("holy_water",
+        () -> new HolyWaterItem(new Item.Properties().setId(ITEMS.key("holy_water")).stacksTo(16))
+    );
+
+    // The thrown Holy Water entity
+    public static final RegistryObject<EntityType<HolyWaterEntity>> HOLY_WATER_ENTITY = ENTITY_TYPES.register("holy_water",
+        () -> EntityType.Builder.<HolyWaterEntity>of(HolyWaterEntity::new, MobCategory.MISC)
+            .sized(0.25F, 0.25F)
+            .clientTrackingRange(8)
+            .updateInterval(2)
+            .build(ENTITY_TYPES.key("holy_water"))
+    );
+
+    // Creates a creative tab for the Castlevania mod
+    public static final RegistryObject<CreativeModeTab> CASTLEVANIA_TAB = CREATIVE_MODE_TABS.register("castlevania_weapons", () -> CreativeModeTab.builder()
             .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> EXAMPLE_ITEM.get().getDefaultInstance())
+            .icon(() -> CROSS_ITEM.get().getDefaultInstance())
+            .title(Component.translatable("itemGroup.castlevania_weapons"))
             .displayItems((_, output) -> {
-                output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
+                output.accept(CROSS_ITEM.get());
+                output.accept(HOLY_WATER_ITEM.get());
             }).build());
 
     public CastlevaniaMod(FMLJavaModLoadingContext context) {
@@ -128,12 +147,10 @@ public final class CastlevaniaMod {
         Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
     }
 
-    // Add the example block item to the building blocks tab, and the Cross to the combat tab
+    // Add the example block item to the building blocks tab
     private static void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS)
             event.accept(EXAMPLE_BLOCK_ITEM);
-        if (event.getTabKey() == CreativeModeTabs.COMBAT)
-            event.accept(CROSS_ITEM);
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
@@ -150,6 +167,8 @@ public final class CastlevaniaMod {
         public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
             // The thrown Cross is rendered as its own item
             event.registerEntityRenderer(CROSS_ENTITY.get(), ThrownItemRenderer::new);
+            // The thrown Holy Water is rendered as its own item
+            event.registerEntityRenderer(HOLY_WATER_ENTITY.get(), ThrownItemRenderer::new);
         }
     }
 }

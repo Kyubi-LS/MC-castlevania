@@ -40,13 +40,21 @@ public class CrossItem extends Item {
         );
 
         if (level instanceof ServerLevel serverLevel) {
+            // Copy the stack for the projectile BEFORE shrinking (so the entity gets the item)
+            final ItemStack projectileStack = stack.copy();
+            projectileStack.setCount(1);
+            
+            // Consume one from the player's stack
+            if (!player.getAbilities().instabuild) {
+                stack.shrink(1);
+            }
+            
             Projectile.spawnProjectileFromRotation(
-                CrossEntity::new, serverLevel, stack, player, 0.0F, SHOOT_POWER, 0.0F
+                CrossEntity::new, serverLevel, projectileStack, player, 0.0F, SHOOT_POWER, 0.0F
             );
         }
 
         player.awardStat(Stats.ITEM_USED.get(this));
-        // Don't consume the stack - the cross returns to the inventory via CrossEntity.giveToOwner()
         return InteractionResult.SUCCESS;
     }
 }

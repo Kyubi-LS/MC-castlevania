@@ -1,7 +1,9 @@
 {
   "item.castlevania.cross": "Cross",
   "entity.castlevania.cross": "Cross",
+  "item.castlevania.holy_water": "Holy Water",
+  "entity.castlevania.holy_water": "Holy Water",
   "item.castlevania.example_item": "Example Item",
   "block.castlevania.example_block": "Example Block",
-  "itemGroup.castlevania.example_tab": "Example Tab"
+  "itemGroup.castlevania.castlevania_weapons": "Castlevania Weapons"
 }

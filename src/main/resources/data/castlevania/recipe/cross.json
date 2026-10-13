@@ -2,12 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "G": "minecraft:gold_ingot",
-    "I": "minecraft:iron_ingot"
+    "I": "minecraft:iron_ingot",
+    "L": "minecraft:lapis_lazuli"
   },
   "pattern": [
     " I ",
-    "IGI",
+    "ILI",
     " I "
   ],
   "result": {

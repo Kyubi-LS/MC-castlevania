@@ -41,7 +41,7 @@ public class CrossEntity extends ThrowableItemProjectile {
     /** Outward speed in blocks per tick (24 blocks per second). */
     public static final double OUTGOING_SPEED = 1.2D;
     /** Damage dealt to every enemy touched by the cross. */
-    public static final float DAMAGE = 6.0F;
+    public static final float DAMAGE = 10.0F;
     /** Failsafe lifetime: after this many ticks the cross simply drops on the ground. */
     public static final int MAX_LIFETIME_TICKS = 1200;
 
@@ -62,13 +62,19 @@ public class CrossEntity extends ThrowableItemProjectile {
     private int waitTicks;
     private int returnTicks;
     private int ownerMissingTicks;
+    /** Current rotation for spinning effect. */
+    public float spinRotation;
+    /** Rotation speed in degrees per tick. */
+    private static final float SPIN_SPEED = 30.0F; // 30 degrees per tick = 1800 deg/sec = 5 rotations/sec
 
     public CrossEntity(final EntityType<CrossEntity> type, final Level level) {
         super(type, level);
+        this.setNoGravity(true);
     }
 
     public CrossEntity(final Level level, final LivingEntity owner, final ItemStack itemStack) {
         super(CastlevaniaMod.CROSS_ENTITY.get(), owner, level, itemStack);
+        this.setNoGravity(true);
     }
 
     @Override
@@ -80,7 +86,23 @@ public class CrossEntity extends ThrowableItemProjectile {
     public void tick() {
         super.tick(); // projectile bookkeeping + base tick (portals, fire, fluids, ...)
 
-        if (this.level().isClientSide() || !this.isAlive()) {
+        // Update spin rotation every tick (both client and server)
+        this.spinRotation += SPIN_SPEED;
+        if (this.spinRotation >= 360.0F) {
+            this.spinRotation -= 360.0F;
+        }
+        // Set entity yaw rotation for in-plane spinning (clockwise = increasing yaw)
+        // ThrownItemRenderer applies entity yaw to the billboard, creating in-plane rotation
+        this.setYRot(this.spinRotation);
+        // Keep pitch at 0 for flat horizontal flight (no gravity)
+        this.setXRot(0.0F);
+
+        // Spawn snow particles around the cross (client-side only for visual effect)
+        if (this.level().isClientSide()) {
+            this.spawnSnowParticles();
+        }
+
+        if (!this.isAlive()) {
             return;
         }
 
@@ -97,6 +119,22 @@ public class CrossEntity extends ThrowableItemProjectile {
             case OUTGOING -> this.tickOutgoing();
             case WAITING -> this.tickWaiting();
             case RETURNING -> this.tickReturning();
+        }
+    }
+
+    /** Spawns snow particles around the cross for a magical effect. */
+    private void spawnSnowParticles() {
+        final double x = this.getX();
+        final double y = this.getY();
+        final double z = this.getZ();
+        final int particleCount = 2;
+        for (int i = 0; i < particleCount; i++) {
+            final double angle = (this.tickCount * 0.5 + i * (2.0 * Math.PI / particleCount)) % (2.0 * Math.PI);
+            final double radius = 0.3;
+            final double px = x + Math.cos(angle) * radius;
+            final double py = y + (this.random.nextDouble() - 0.5) * 0.5;
+            final double pz = z + Math.sin(angle) * radius;
+            this.level().addParticle(ParticleTypes.SNOWFLAKE, px, py, pz, 0.0, 0.05, 0.0);
         }
     }
 

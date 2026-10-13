@@ -1,7 +1,9 @@
 {
   "item.castlevania.cross": "Cruz",
   "entity.castlevania.cross": "Cruz",
+  "item.castlevania.holy_water": "Agua Bendita",
+  "entity.castlevania.holy_water": "Agua Bendita",
   "item.castlevania.example_item": "Objeto de ejemplo",
   "block.castlevania.example_block": "Bloque de ejemplo",
-  "itemGroup.castlevania.example_tab": "Pestaña de ejemplo"
+  "itemGroup.castlevania.castlevania_weapons": "Armas de Castlevania"
 }
