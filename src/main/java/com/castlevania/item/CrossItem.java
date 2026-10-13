@@ -46,7 +46,7 @@ public class CrossItem extends Item {
         }
 
         player.awardStat(Stats.ITEM_USED.get(this));
-        stack.consume(1, player);
+        // Don't consume the stack - the cross returns to the inventory via CrossEntity.giveToOwner()
         return InteractionResult.SUCCESS;
     }
 }

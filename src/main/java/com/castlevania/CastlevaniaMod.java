@@ -74,7 +74,7 @@ public final class CastlevaniaMod {
 
     // The Cross: a throwable weapon that flies 10 blocks, waits 2 seconds and returns to the inventory
     public static final RegistryObject<Item> CROSS_ITEM = ITEMS.register("cross",
-        () -> new CrossItem(new Item.Properties().setId(ITEMS.key("cross")))
+        () -> new CrossItem(new Item.Properties().setId(ITEMS.key("cross")).stacksTo(1))
     );
 
     // The thrown Cross entity
@@ -137,7 +137,7 @@ public final class CastlevaniaMod {
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
