@@ -5,5 +5,7 @@
   "entity.castlevania.holy_water": "Holy Water",
   "item.castlevania.example_item": "Example Item",
   "block.castlevania.example_block": "Example Block",
+  "item.castlevania.bible": "Bible",
+  "entity.castlevania.bible": "Bible",
   "itemGroup.castlevania.castlevania_weapons": "Castlevania Weapons"
 }

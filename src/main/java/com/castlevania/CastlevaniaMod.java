@@ -1,7 +1,9 @@
 package com.castlevania;
 
+import com.castlevania.entity.BibleEntity;
 import com.castlevania.entity.CrossEntity;
 import com.castlevania.entity.HolyWaterEntity;
+import com.castlevania.item.BibleItem;
 import com.castlevania.item.CrossItem;
 import com.castlevania.item.HolyWaterItem;
 import com.mojang.logging.LogUtils;
@@ -103,6 +105,20 @@ public final class CastlevaniaMod {
             .build(ENTITY_TYPES.key("holy_water"))
     );
 
+    // The Bible: a thrown weapon that spins around the player for 5 seconds then disappears
+    public static final RegistryObject<Item> BIBLE_ITEM = ITEMS.register("bible",
+        () -> new BibleItem(new Item.Properties().setId(ITEMS.key("bible")).stacksTo(1))
+    );
+
+    // The thrown Bible entity
+    public static final RegistryObject<EntityType<BibleEntity>> BIBLE_ENTITY = ENTITY_TYPES.register("bible",
+        () -> EntityType.Builder.<BibleEntity>of(BibleEntity::new, MobCategory.MISC)
+            .sized(0.5F, 0.5F)
+            .clientTrackingRange(8)
+            .updateInterval(2)
+            .build(ENTITY_TYPES.key("bible"))
+    );
+
     // Creates a creative tab for the Castlevania mod
     public static final RegistryObject<CreativeModeTab> CASTLEVANIA_TAB = CREATIVE_MODE_TABS.register("castlevania_weapons", () -> CreativeModeTab.builder()
             .withTabsBefore(CreativeModeTabs.COMBAT)
@@ -111,6 +127,7 @@ public final class CastlevaniaMod {
             .displayItems((_, output) -> {
                 output.accept(CROSS_ITEM.get());
                 output.accept(HOLY_WATER_ITEM.get());
+                output.accept(BIBLE_ITEM.get());
             }).build());
 
     public CastlevaniaMod(FMLJavaModLoadingContext context) {
@@ -169,6 +186,8 @@ public final class CastlevaniaMod {
             event.registerEntityRenderer(CROSS_ENTITY.get(), ThrownItemRenderer::new);
             // The thrown Holy Water is rendered as its own item
             event.registerEntityRenderer(HOLY_WATER_ENTITY.get(), ThrownItemRenderer::new);
+            // The thrown Bible is rendered as its own item
+            event.registerEntityRenderer(BIBLE_ENTITY.get(), ThrownItemRenderer::new);
         }
     }
 }

@@ -5,5 +5,7 @@
   "entity.castlevania.holy_water": "Agua Bendita",
   "item.castlevania.example_item": "Objeto de ejemplo",
   "block.castlevania.example_block": "Bloque de ejemplo",
+  "item.castlevania.bible": "Biblia",
+  "entity.castlevania.bible": "Biblia",
   "itemGroup.castlevania.castlevania_weapons": "Armas de Castlevania"
 }
